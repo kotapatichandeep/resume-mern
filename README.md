@@ -12,6 +12,13 @@ This is a MERN stack application for analyzing resumes using AI.
 - Node.js (v14 or higher)
 - MongoDB (running locally or a cloud URI)
 
+## Environment Variables
+
+**Never commit `.env` files to version control.** Use `.env.example` as a template.
+
+- Backend environment variables: See `backend/.env.example`
+- Add your actual `.env` file to `backend/` directory locally
+
 ## Setup & Run
 
 ### 1. Backend
@@ -22,17 +29,22 @@ cd backend
 npm install
 ```
 
-Create a `.env` file in `backend/` with the following:
+Create a `.env` file in `backend/` by copying `.env.example`:
+```bash
+cp .env.example .env
 ```
-PORT=5000
-MONGO_URI=mongodb://localhost:27017/resume-analyzer
-JWT_SECRET=your_secret_key_here
-```
+
+Edit `.env` and update the values with your actual configuration:
+- `MONGO_URI`: Your MongoDB connection string
+- `JWT_SECRET`: A secure random string for JWT tokens
+- `CLERK_SECRET_KEY`: Your Clerk authentication key (if using Clerk)
+- `OPENAI_API_KEY`: Your OpenAI API key for AI resume analysis
+- `PORT`: Server port (default: 5000)
 
 Start the backend server:
 ```bash
 node server.js
-# or for development
+# or for development with auto-reload
 npm run dev
 ```
 Server runs on http://localhost:5000
