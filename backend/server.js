@@ -16,14 +16,28 @@ app.use('/uploads', express.static('uploads'));
 // Database Connection
 mongoose.connect(process.env.MONGO_URI)
     .then(() => console.log('MongoDB Connected'))
-    .catch(err => console.log(err));
+    .catch(err => {
+        console.error('MongoDB Connection Error:', err.message);
+        process.exit(1);
+    });
 
 // Routes
 app.use('/api/resume', require('./routes/resumeRoutes'));
-
 
 app.get('/', (req, res) => {
     res.send('API is running...');
 });
 
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+// Error handling middleware
+app.use((err, req, res, next) => {
+    console.error(err.stack);
+    res.status(500).json({ 
+        error: process.env.NODE_ENV === 'production' 
+            ? 'Internal Server Error' 
+            : err.message 
+    });
+});
+
+app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT} in ${process.env.NODE_ENV || 'development'} mode`);
+});
