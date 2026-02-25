@@ -2,6 +2,8 @@ const express = require('express');
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
 const cors = require('cors');
+const fs = require('fs');
+const path = require('path');
 
 dotenv.config();
 
@@ -11,6 +13,14 @@ const PORT = process.env.PORT || 5000;
 // Middleware
 app.use(express.json());
 app.use(cors());
+
+// Ensure upload directory exists
+const uploadDir = path.join(__dirname, 'uploads');
+if (!fs.existsSync(uploadDir)) {
+    fs.mkdirSync(uploadDir);
+    console.log('Created uploads directory');
+}
+
 app.use('/uploads', express.static('uploads'));
 
 // Database Connection
@@ -30,11 +40,12 @@ app.get('/', (req, res) => {
 
 // Error handling middleware
 app.use((err, req, res, next) => {
-    console.error(err.stack);
-    res.status(500).json({ 
-        error: process.env.NODE_ENV === 'production' 
-            ? 'Internal Server Error' 
-            : err.message 
+    console.error('SERVER ERROR:', err.message);
+    if (err.stack) console.error(err.stack);
+
+    res.status(500).json({
+        message: 'Internal Server Error',
+        error: process.env.NODE_ENV === 'production' ? {} : err.message
     });
 });
 
