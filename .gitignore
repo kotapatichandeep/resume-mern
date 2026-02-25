@@ -1,0 +1,23 @@
+# Node modules
+node_modules/
+**/node_modules/
+
+# Backend uploads (keep out of repo)
+backend/uploads/
+
+# Logs
+*.log
+
+# macOS
+.DS_Store
+
+# Environment
+.env
+.env.local
+
+# Build / output
+dist/
+build/
+
+# VS Code
+.vscode/
