@@ -13,7 +13,7 @@ const analyzeResume = async (filePath) => {
         const data = await pdf(dataBuffer);
         const text = data.text;
 
-        const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
+        const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
         const prompt = `
             Analyze the following resume text and provide a structured JSON response.
